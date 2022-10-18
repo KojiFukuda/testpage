@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>CodeReadSample</title>
+</head>
+<body>
+    <p><font size="6">Création</font>  データ入力モックアップ</p>
+    <br />
+    <lebel>入力コード : <input type="text" id="textcode" value="" ;"/></lebel><br />
+    <br />
+    <input type="button" value="Exec" onclick="OnButtonClick();"/><br />
+    <br />
+    <div id="output"></div>
+</body>
+
+<script>
+    window.onload = initializeProc
+     document.onkeydown = keyDown;
+     var dsm;
+     var reading = false;
+     var count = 0;
+     var userid = "";
+     var orderno = "";
+     var procid = "";
+     //ページ中どこでキー押されてもフォーカスはテキストボックスに
+     function keyDown()
+     {
+        if(reading)return;
+        // まずクリア
+        targetinput = document.getElementById("textcode");
+        targetinput.value = "";
+        reading = true;
+         
+        count++;//デバッグ用読み取り回数
+ 
+        // 入力ボックスにフォーカス
+        targetinput.focus();
+ 
+        // ちょっと遅延して入力確定
+        sleepfunc(1500, function () {
+            var inputcode = targetinput.value;
+            var ch = inputcode[0];
+            if(ch =='u' || ch == 'U') {
+                userid = inputcode;
+            } else if(ch == 'o' || ch == 'O') {
+                orderno = inputcode;
+            } else if(ch == 'p' || ch == 'P') {
+                procid = inputcode;
+            }
+
+            target = document.getElementById("output");
+            target.innerHTML ="<lebel>ユーザーID : <input type=\"text\" value=\""+userid +"\" ;\"/></lebel><br />"+ 
+                                "<lebel>オーダーNo. : <input type=\"text\" value=\""+orderno +"\" ;\"/></lebel><br />"+ 
+                                "<lebel>工程ID : <input type=\"text\" value=\""+procid +"\" ;\"/></lebel><br />";
+            reading=false;
+         });    
+     }
+ 
+     function sleepfunc(waitmilliSec, callbackFunc) {
+         // 経過時間（ms）
+         var spanedMSec = 0;
+ 
+         // 100ms間隔で無名関数を実行
+         var id = setInterval(function () {
+             spanedMSec+=100;
+ 
+             // 経過時間 >= 待機時間の場合、待機終了。
+             if (spanedMSec >= waitmilliSec) {
+                 // タイマー停止
+                 clearInterval(id);  
+                 // 完了時、コールバック関数を実行
+                 if (callbackFunc) callbackFunc();
+             }
+         }, 100);
+     }
+ 
+     function initializeProc()
+     {
+        
+ 
+     }
+     function OnButtonClick() 
+     {
+         target = document.getElementById("output");
+         target.innerHTML = "Enter text is.. " + textcode.value ;
+     }
+ </script>
+</html>
